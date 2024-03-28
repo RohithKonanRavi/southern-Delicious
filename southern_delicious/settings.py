@@ -78,13 +78,13 @@ WSGI_APPLICATION = 'southern_delicious.wsgi.application'
 
 DATABASES = {
     
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'SouthernDelicious',
-        'USER': 'admin',
+     'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'southerndelicious',
+        'USER': 'postgres',
         'PASSWORD': 'password',
-        'HOST': 'southerndelicious.cizdihoh0eru.us-east-1.rds.amazonaws.com',
-        'PORT': '3306',
+        'HOST': 'x23195983-db-sd.cizdihoh0eru.us-east-1.rds.amazonaws.com',
+        'PORT': '5432',
     }
 }   
 
