@@ -25,7 +25,7 @@ SECRET_KEY = 'v7)ouo@=dhswvnfs!@o$v07^m^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'southern_delicious.wsgi.application'
 
 DATABASES = {
     
-     'default': {
+    'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'southerndelicious',
         'USER': 'postgres',
@@ -86,8 +86,8 @@ DATABASES = {
         'HOST': 'x23195983-db-sd.cizdihoh0eru.us-east-1.rds.amazonaws.com',
         'PORT': '5432',
     }
-}   
 
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -114,12 +114,12 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
+USE_TZ = True
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
