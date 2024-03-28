@@ -5,8 +5,8 @@ __pycache__/
 *.sqlite3
 
 # Static files
-staticfiles/
-media/
+; staticfiles/
+; media/
 
 # Virtual environment
 venv/
