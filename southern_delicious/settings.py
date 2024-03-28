@@ -83,7 +83,7 @@ DATABASES = {
         'NAME': 'SouthernDelicious',
         'USER': 'admin',
         'PASSWORD': 'password',
-        'HOST': 'x23195983-sd-devsecops.cizdihoh0eru.us-east-1.rds.amazonaws.com',
+        'HOST': 'southerndelicious.cizdihoh0eru.us-east-1.rds.amazonaws.com',
         'PORT': '3306',
     }
 }   
