@@ -4,6 +4,7 @@ from django.contrib.auth import login, logout
 from .forms import NewUSerForm
 
 def signup_view(request):
+    """This function is used to create a new user account"""
     if request.method == 'POST':
         form = NewUSerForm(request.POST)
         if form.is_valid():
@@ -15,6 +16,7 @@ def signup_view(request):
     return render(request, 'accounts/signup.html', { 'form': form })
 
 def login_view(request):
+    """This function is used to log in a user account"""
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
@@ -29,6 +31,7 @@ def login_view(request):
     return render(request, 'accounts/login.html', { 'form': form })
 
 def logout_view(request):
+    """This function is used to log out a user account"""
     if request.method == 'POST':
             logout(request)
             return redirect('/')

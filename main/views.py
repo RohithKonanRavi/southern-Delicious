@@ -20,6 +20,7 @@ class MenuListView(ListView):
     context_object_name = 'menu_items'
 
 def menuDetail(request, slug):
+    """This function is used to display the details of the menu items"""
     item = Item.objects.filter(slug=slug).first()
     reviews = Reviews.objects.filter(rslug=slug).order_by('-id')[:7] 
     context = {
@@ -30,6 +31,7 @@ def menuDetail(request, slug):
 
 @login_required
 def add_reviews(request):
+    """This function is used to add reviews to the menu items"""
     if request.method == "POST":
         user = request.user
         rslug = request.POST.get("rslug")
