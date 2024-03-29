@@ -7,7 +7,7 @@ phases:
   install:
     runtime-versions:
       python: 3.11
-      java: corretto21
+      java: corretto17  # Corrected to use Corretto 17
     commands:
       - echo Installing requirements...
       - pip install -r requirements.txt
