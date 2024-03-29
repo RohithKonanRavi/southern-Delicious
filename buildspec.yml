@@ -26,12 +26,14 @@ phases:
       - echo Running tests...
       - python manage.py test
       - echo Starting SonarQube analysis...
-      - sonar-scanner \
-        -Dsonar.projectKey=RohithKonanRavi_southern-Delicious \
-        -Dsonar.organization=rohithkonanravi \
-        -Dsonar.sources=. \
-        -Dsonar.host.url=https://sonarcloud.io \
-        -Dsonar.login=378bd0c0b956beb0c385de91bb539fab3cc06492  # It's safer to use environment variables for secrets
+      - sonar-scanner -Dsonar.projectKey=RohithKonanRavi_southern-Delicious -Dsonar.organization=rohithkonanravi -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=378bd0c0b956beb0c385de91bb539fab3cc06492
+
+      # - sonar-scanner \
+      #   -Dsonar.projectKey=RohithKonanRavi_southern-Delicious \
+      #   -Dsonar.organization=rohithkonanravi \
+      #   -Dsonar.sources=. \
+      #   -Dsonar.host.url=https://sonarcloud.io \
+      #   -Dsonar.login=378bd0c0b956beb0c385de91bb539fab3cc06492  # It's safer to use environment variables for secrets
 
   post_build:
     commands:
@@ -41,7 +43,7 @@ phases:
 artifacts:
   files:
     - '**/*'
-  base-directory: build
+  # base-directory: build
 
 cache:
   paths:
