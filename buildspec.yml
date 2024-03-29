@@ -1,7 +1,7 @@
 version: 0.2
 
 env:
-  variables
+  secrets-manager:
     SONAR_TOKEN: $mysonartoken_SD
 phases:
   install:
