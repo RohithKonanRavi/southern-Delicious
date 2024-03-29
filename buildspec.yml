@@ -4,7 +4,7 @@ phases:
   install:
     runtime-versions:
       python: 3.11
-      java: 11  # Or a compatible Java version for your Sonar Python Plugin
+      java: corretto17  # Java 17
     commands:
       - echo Installing requirements...
       - pip install -r requirements.txt
