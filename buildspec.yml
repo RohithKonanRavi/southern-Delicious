@@ -1,5 +1,8 @@
 version: 0.2
 
+env:
+  variables
+    SONAR_TOKEN: $mysonartoken_SD
 phases:
   install:
     runtime-versions:
@@ -24,11 +27,12 @@ phases:
       - echo Running tests...
       - python manage.py test
       - echo Starting SonarQube analysis...
-      - sonar-scanner \
-          -Dsonar.projectKey=RohithKonanRavi_southern-Delicious \
-          -Dsonar.organization=rohithkonanravi \
-          -Dsonar.sources=. \
-          -Dsonar.host.url=https://sonarcloud.io \
+      - >
+        sonar-scanner 
+          -Dsonar.projectKey=RohithKonanRavi_southern-Delicious 
+          -Dsonar.organization=rohithkonanravi 
+          -Dsonar.sources=. 
+          -Dsonar.host.url=https://sonarcloud.io 
           -Dsonar.login=$SONAR_TOKEN
 
   post_build:
