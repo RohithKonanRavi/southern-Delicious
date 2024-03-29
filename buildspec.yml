@@ -7,8 +7,11 @@ phases:
   install:
     runtime-versions:
       python: 3.11
-      java: corretto17  # Corrected to use Corretto 17
+      java: corretto17    
     commands:
+      - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
+      - export PATH=$JAVA_HOME/bin:$PATH
+      - java -version 
       - echo Installing requirements...
       - pip install -r requirements.txt
       - pip install pylint
