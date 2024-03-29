@@ -1,16 +1,14 @@
-# buildspec yaml for django project wiht sonarqube and pylint check and deploy to elastibenastalk using code pipeline
 version: 0.2
 
 phases:
   install:
     runtime-versions:
       python: 3.11
+      java: 11  # Or a compatible Java version for your Sonar Python Plugin
     commands:
-      # Install dependencies
       - echo Installing requirements...
       - pip install -r requirements.txt
       - pip install pylint
-      # Install SonarQube scanner
       - echo Installing SonarQube scanner...
       - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
       - unzip sonar-scanner-cli-4.6.2.2472-linux.zip
@@ -26,24 +24,21 @@ phases:
       - echo Running tests...
       - python manage.py test
       - echo Starting SonarQube analysis...
-      - sonar-scanner -Dsonar.projectKey=RohithKonanRavi_southern-Delicious -Dsonar.organization=rohithkonanravi -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=378bd0c0b956beb0c385de91bb539fab3cc06492
-
-      # - sonar-scanner \
-      #   -Dsonar.projectKey=RohithKonanRavi_southern-Delicious \
-      #   -Dsonar.organization=rohithkonanravi \
-      #   -Dsonar.sources=. \
-      #   -Dsonar.host.url=https://sonarcloud.io \
-      #   -Dsonar.login=378bd0c0b956beb0c385de91bb539fab3cc06492  # It's safer to use environment variables for secrets
+      - sonar-scanner \
+          -Dsonar.projectKey=RohithKonanRavi_southern-Delicious \
+          -Dsonar.organization=rohithkonanravi \
+          -Dsonar.sources=. \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.login=$SONAR_TOKEN
 
   post_build:
     commands:
       - echo Build completed on `date`
-      # Add AWS Elastic Beanstalk deployment commands here if necessary
+      # Add AWS Elastic Beanstalk deployment commands here
 
 artifacts:
   files:
     - '**/*'
-  # base-directory: build
 
 cache:
   paths:
