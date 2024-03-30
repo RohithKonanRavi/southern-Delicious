@@ -19,13 +19,13 @@ phases:
       - pip install -r requirements.txt
       - pip install pylint
       - echo Installing SonarQube scanner...
-      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.0.702-linux.zip
-      - unzip -q sonar-scanner-cli-3.0.0.702-linux.zip -d /opt/
+      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+      - unzip -q sonar-scanner-cli-5.0.1.3006-linux.zip -d /opt/
       - ls -lrt /opt/
-      - chmod -R 777 /opt/sonar-scanner-3.0.0.702-linux/bin/sonar-scanner
+      - chmod -R 777 /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
 
-      - ls -lrt /opt/sonar-scanner-3.0.0.702-linux//bin/
-      - export PATH="/opt/sonar-scanner-3.0.0.702-linux/bin:$PATH"
+      - ls -lrt /opt/sonar-scanner-5.0.1.3006-linux//bin/
+      - export PATH="/opt/sonar-scanner-5.0.1.3006-linux/bin:$PATH"
       - echo $PATH
       - sonar-scanner -v
       - echo Installing jq...
