@@ -10,8 +10,8 @@ env:
 phases:
   install:
     runtime-versions:
-      java: corretto11
-      python: 3.9
+      java: corretto17
+      python: 3.11
 
     commands:
       - java -version
