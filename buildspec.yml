@@ -21,7 +21,7 @@ phases:
       - tar -xzvf OpenJDK17U-jre_aarch64_linux_hotspot_17.0.10_7.tar.gz -C /opt/
       - rm OpenJDK17U-jre_aarch64_linux_hotspot_17.0.10_7.tar.gz
       - export JAVA_HOME=/opt/jdk-17.0.10+7-jre/bin
-      - export PATH="$JAVA_HOME/bin:$PATH"
+      - export PATH="$JAVA_HOME:$PATH"
       - java -version  # Check Java version
       - echo Installing SonarQube scanner...
       - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
