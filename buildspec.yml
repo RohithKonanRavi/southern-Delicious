@@ -24,7 +24,7 @@ phases:
       - ls -lrt /opt/
       - chmod -R 777 /opt/sonar-scanner-3.0.0.702-linux/bin/sonar-scanner
 
-      - ls -lrt /opt/sonar-scanner-cli-3.0.0.702-linux/bin/
+      - ls -lrt /opt/sonar-scanner-3.0.0.702-linux//bin/
       - export PATH="/opt/sonar-scanner-3.0.0.702-linux/bin:$PATH"
       - echo $PATH
       - sonar-scanner -v
