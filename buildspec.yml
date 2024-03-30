@@ -4,26 +4,27 @@ env:
   variables:
     LOGIN: 236f7a35882853a0ab27bd75d4c45a5b9c5604c6
     HOST: https://sonarcloud.io
-    Organization: rohithkonanravi
-    Project: RohithKonanRavi_southern-Delicious
+    ORGANIZATION: rohithkonanravi
+    PROJECT: RohithKonanRavi_southern-Delicious
 phases:
   install:
     runtime-versions:
       python: 3.11
-      java: corretto17    
+      java: corretto17
     commands:
-      - yum update -y
-      - yum install -y jq
-      - export JAVA_HOME=/usr/lib/jvm/java-17-amazon-corretto
+      - echo Setting JAVA_HOME...
+      - JAVA_HOME=$(alternatives --display java | grep 'family corretto-17' -A 1 | grep 'link currently points to' | sed 's/link currently points to //g' | sed 's|/bin/java||g')
+      - echo "JAVA_HOME set to $JAVA_HOME"
+      - export JAVA_HOME
       - export PATH=$JAVA_HOME/bin:$PATH
-      - java -version 
+      - java -version
       - echo Installing requirements...
       - pip install -r requirements.txt
       - pip install pylint
       - echo Installing SonarQube scanner...
       - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
-      - unzip sonar-scanner-cli-4.6.2.2472-linux.zip
-      - export PATH=$PATH:$(pwd)/sonar-scanner-4.6.2.2472-linux/bin
+      - unzip sonar-scanner-cli-4.6.2.2472-linux.zip -d sonar-scanner
+      - export PATH=$PATH:$(pwd)/sonar-scanner/sonar-scanner-4.6.2.2472-linux/bin
 
   pre_build:
     commands:
@@ -35,9 +36,9 @@ phases:
       - echo Running tests...
       - python manage.py test
       - echo Starting SonarQube analysis...
-      - sonar-scanner -X -Dsonar.projectKey=RohithKonanRavi_southern-Delicious -Dsonar.organization=$Organization -Dsonar.sources=. -Dsonar.host.url=$HOST -Dsonar.login=$LOGIN -Dsonar.python.coverage.reportPaths=coverage.xml
+      - sonar-scanner -Dsonar.projectKey=$PROJECT -Dsonar.organization=$ORGANIZATION -Dsonar.sources=. -Dsonar.host.url=$HOST -Dsonar.login=$LOGIN -Dsonar.python.coverage.reportPaths=coverage.xml
       - sleep 5
-      - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$Project>result.json
+      - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$PROJECT >result.json
       - cat result.json
       - >
         if [ "$(jq -r '.projectStatus.status' result.json)" = "ERROR" ]; then
@@ -48,7 +49,6 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
-      # Add AWS Elastic Beanstalk deployment commands here
 
 artifacts:
   files:
