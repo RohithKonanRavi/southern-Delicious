@@ -28,6 +28,7 @@ phases:
       - ls -lrt /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
 
       - ls -lrt /opt/sonar-scanner-5.0.1.3006-linux//bin/
+      - la -lrt /opt/sonar-scanner-5.0.1.3006-linux/jre/bin/java
       - export PATH="/opt/sonar-scanner-5.0.1.3006-linux/bin:$PATH"
       - echo $PATH
       - java -version
