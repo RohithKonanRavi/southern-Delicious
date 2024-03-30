@@ -12,36 +12,45 @@ phases:
     runtime-versions:
       java: corretto17
       python: 3.11
+
     commands:
       - java -version
-      - pip install -r requirements.txt 
+      - echo Installing requirements...
+      - pip install -r requirements.txt
       - pip install pylint
-      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
-      - unzip sonar-scanner-cli-4.6.2.2472-linux.zip -d /opt/sonar-scanner
-      - export PATH=/opt/sonar-scanner/bin:$PATH
-      - yum install -y jq  # Preferred package manager for Amazon Linux
+      - echo Installing SonarQube scanner...
+      - curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.0.702-linux.zip
+      - unzip -q sonar-scanner.zip -d /opt/
+      - export PATH="/opt/sonar-scanner/bin:$PATH"
+      - sonar-scanner -v
+      - echo Installing jq...
+      - apt-get update
+      - apt-get install -y jq
 
   pre_build:
     commands:
+      - echo Running Pylint...
       - pylint --exit-zero accounts/ main/ southern_delicious/
-
   build:
     commands:
+      - echo Running tests...
       - python manage.py test
-      - export PATH=/opt/sonar-scanner/bin:$PATH  # Ensure PATH is set in build phase
+      - echo Starting SonarQube analysis...
       - sonar-scanner -X -Dsonar.projectKey=$PROJECT -Dsonar.organization=$ORGANIZATION -Dsonar.sources=. -Dsonar.host.url=$HOST -Dsonar.login=$LOGIN -Dsonar.python.coverage.reportPaths=coverage.xml
-      - sleep 5 
-      - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$PROJECT > result.json
+      - sleep 5
+      - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$PROJECT >result.json
       - cat result.json
-      - jq -r '.projectStatus.status' result.json | grep -q "ERROR" && echo "Quality Gate failed" && exit 1
-
+      - >
+        if [ "$(jq -r '.projectStatus.status' result.json)" = "ERROR" ]; then
+          echo "Quality Gate failed";
+          exit 1;
+        fi
   post_build:
     commands:
       - echo Build completed on `date`
-
 artifacts:
   files:
-    - '**/*'  
+    - '**/*'
 cache:
   paths:
     - '/root/.m2/**/*'
