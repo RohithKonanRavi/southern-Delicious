@@ -2,20 +2,19 @@ version: 0.2
 
 phases:
   install:
-    runtime-versions:
-      python: 3.11
     commands:
-      # Check architecture
       - uname -m
-      # Update system and install OpenJDK 17
-      - sudo yum update -y
-      - sudo amazon-linux-extras install -y java-openjdk17
-      # Set JAVA_HOME for OpenJDK 17 (Amazon Linux 2)
-      - export JAVA_HOME=$(/usr/libexec/java_home -v 17)
-      # Install pylint
+      # Update system
+      - sudo dnf update -y
+      # Install OpenJDK 17
+      - sudo dnf install -y java-17-openjdk
+      # Verify Java installation
+      - java -version
+      # Set JAVA_HOME. This path might need adjustment based on the actual installation directory of OpenJDK 17
+      - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
+      - echo "JAVA_HOME is set to $JAVA_HOME"
       - echo "Installing pylint..."
       - pip install pylint
-      # Download and setup SonarScanner (Make sure to use compatible version or architecture-neutral if available)
       - echo "Installing SonarScanner..."
       - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
       - unzip sonar-scanner-cli-5.0.1.3006-linux.zip
@@ -23,16 +22,13 @@ phases:
 
   pre_build:
     commands:
-      # Install project dependencies from requirements.txt
       - echo "Pre-build step; install project dependencies..."
       - pip install -r requirements.txt
 
   build:
     commands:
-      # Run pylint
       - echo "Running pylint..."
       - pylint --exit-zero accounts/ main/ southern_delicious/
-      # Execute SonarScanner using the specified JAVA_HOME
       - echo "Running sonar-scanner..."
       - >
         sonar-scanner
@@ -45,5 +41,4 @@ phases:
 
   post_build:
     commands:
-      # Any post-build steps you have
       - echo "Post-build steps..."
