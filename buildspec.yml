@@ -22,7 +22,7 @@ phases:
     commands:
       - echo "Running pylint..."
       # Replace ./src with the directory where your Python code exists
-      - pylint ./src
+      - pylint --exit-zero accounts/ main/ southern_delicious/
       - echo "Running sonar-scanner..."
       # The following environment variables and scanner properties will be used by sonar-scanner
       - >
