@@ -5,7 +5,7 @@ env:
     LOGIN: sqp_acec9008a9b750739c1b2094c3e8f23fb3733a40
     HOST: https://sonarcloud.io
     Organization: rohithkonanravi
-    # Project: RohithKonanRavi_southern-Delicious
+    Project: RohithKonanRavi_southern-Delicious
 phases:
   install:
     runtime-versions:
@@ -35,11 +35,15 @@ phases:
       - echo Running tests...
       - python manage.py test
       - echo Starting SonarQube analysis...
-      - sonar-scanner -X -Dsonar.projectKey=RohithKonanRavi_southern-Delicious -Dsonar.organization=$Organization -Dsonar.sources=. -Dsonar.host.url=$HOST -Dsonar.login=$LOGIN
+      - sonar-scanner -X -Dsonar.projectKey=$Project -Dsonar.organization=$Organization -Dsonar.sources=. -Dsonar.host.url=$HOST -Dsonar.login=$LOGIN
       - sleep 5
       - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$Project >result.json
       - cat result.json
-      - if [ $(jq -r '.projectStatus.status' result.json) = ERROR ] ; then $CODEBUILD_BUILD_SUCCEEDING -eq 0 ;fi
+      - >
+        if [ "$(jq -r '.projectStatus.status' result.json)" = "ERROR" ]; then
+          echo "Quality Gate failed";
+          exit 1;
+        fi
 
   post_build:
     commands:
