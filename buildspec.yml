@@ -12,55 +12,36 @@ phases:
     runtime-versions:
       java: corretto17
       python: 3.11
-
     commands:
       - java -version
-      - echo Installing requirements...
-      - pip install -r requirements.txt
+      - pip install -r requirements.txt 
       - pip install pylint
-      - echo Installing SonarQube scanner...
-      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.0.702-linux.zip
-      - unzip sonar-scanner-cli-3.0.0.702-linux.zip -d sonar-scanner
-      - mv sonar-scanner /opt/sonar-scanner
-      - echo set path for sonar-scanner cli
-      - export SONAR_SCANNER_HOME=/opt/sonar-scanner
-      - export PATH=${SONAR_SCANNER_HOME}/bin:${PATH}
-      - ls -l /opt/sonar-scanner/bin
-      - chmod +x /opt/sonar-scanner/bin/*
+      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+      - unzip sonar-scanner-cli-4.6.2.2472-linux.zip -d /opt/sonar-scanner
+      - export PATH=/opt/sonar-scanner/bin:$PATH
       - sonar-scanner -v
-
-      # - export PATH=$PATH:/sonar-scanner/sonar-scanner-cli-3.0.0.702-linux/bin
-      # - chmod +x sonar-scanner/sonar-scanner-cli-3.0.0.702-linux/bin/sonar-scanner
-      # - ls -l sonar-scanner/sonar-scanner-cli-3.0.0.702-linux/bin/sonar-scanner
-      - sonar-scanner -v
-      - echo Installing jq...
-      - apt-get update
-      - apt-get install jq
+      - yum install -y jq  # Preferred package manager for Amazon Linux
 
   pre_build:
     commands:
-      - echo Running Pylint...
       - pylint --exit-zero accounts/ main/ southern_delicious/
+
   build:
     commands:
-      - echo Running tests...
       - python manage.py test
-      - echo Starting SonarQube analysis...
       - sonar-scanner -X -Dsonar.projectKey=$PROJECT -Dsonar.organization=$ORGANIZATION -Dsonar.sources=. -Dsonar.host.url=$HOST -Dsonar.login=$LOGIN -Dsonar.python.coverage.reportPaths=coverage.xml
-      - sleep 5
-      - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$PROJECT >result.json
+      - sleep 5 
+      - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$PROJECT > result.json
       - cat result.json
-      - >
-        if [ "$(jq -r '.projectStatus.status' result.json)" = "ERROR" ]; then
-          echo "Quality Gate failed";
-          exit 1;
-        fi
+      - jq -r '.projectStatus.status' result.json | grep -q "ERROR" && echo "Quality Gate failed" && exit 1
+
   post_build:
     commands:
       - echo Build completed on `date`
+
 artifacts:
   files:
-    - '**/*'
+    - '**/*'  
 cache:
   paths:
     - '/root/.m2/**/*'
