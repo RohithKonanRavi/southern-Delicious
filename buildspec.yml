@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   secrets-manager:
-    LOGIN: x23195983-Sonartoken
+    LOGIN: sqp_acec9008a9b750739c1b2094c3e8f23fb3733a40
     HOST: htpps://sonarcloud.io
     Organization: rohithkonanravi
     Project: RohithKonanRavi_southern-Delicious
