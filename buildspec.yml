@@ -5,6 +5,7 @@ phases:
     runtime-versions:
       python: 3.11
     commands:
+      - uname -m
       - echo "Installing pylint..."
       - pip install pylint
       - echo "Installing SonarScanner..."
