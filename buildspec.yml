@@ -9,12 +9,10 @@ env:
 
 phases:
   install:
-    runtime-versions:
-      python: 3.11
-      java: corretto21
     commands:
-      - echo Setting JAVA_HOME...
-      - export JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto
+      - echo Installing and setting Java 17...
+      - sudo yum install -y java-17-amazon-corretto-headless
+      - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
       - export PATH=$JAVA_HOME/bin:$PATH
       - java -version
       - echo Installing requirements...
