@@ -19,7 +19,6 @@ phases:
       - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
       - unzip sonar-scanner-cli-4.6.2.2472-linux.zip -d /opt/sonar-scanner
       - export PATH=/opt/sonar-scanner/bin:$PATH
-      - sonar-scanner -v
       - yum install -y jq  # Preferred package manager for Amazon Linux
 
   pre_build:
@@ -29,6 +28,7 @@ phases:
   build:
     commands:
       - python manage.py test
+      - export PATH=/opt/sonar-scanner/bin:$PATH  # Ensure PATH is set in build phase
       - sonar-scanner -X -Dsonar.projectKey=$PROJECT -Dsonar.organization=$ORGANIZATION -Dsonar.sources=. -Dsonar.host.url=$HOST -Dsonar.login=$LOGIN -Dsonar.python.coverage.reportPaths=coverage.xml
       - sleep 5 
       - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$PROJECT > result.json
