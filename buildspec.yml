@@ -2,11 +2,14 @@ version: 0.2
 
 env:
   secrets-manager:
-    SONAR_TOKEN: $mysonartoken_SD
+    LOGIN: prod/sonar/SD:sonartoken
+    HOST: prod/sonar/SD:HOST
+    Organization: prod/sonar/SD:Organization
+    Project: prod/sonar/SD:Project
 phases:
   install:
     runtime-versions:
-      python: 3.11
+      python: 3.9
       java: corretto17    
     commands:
       - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
@@ -31,12 +34,12 @@ phases:
       - python manage.py test
       - echo Starting SonarQube analysis...
       - |
-        sonar-scanner -X \
-        -Dsonar.projectKey=RohithKonanRavi_southern-Delicious \
-        -Dsonar.organization=rohithkonanravi \
-        -Dsonar.sources=. \
-        -Dsonar.host.url=https://sonarcloud.io \
-        -Dsonar.login=$SONAR_TOKEN
+        sonar-scanner -X 
+        -Dsonar.projectKey=$project
+        -Dsonar.organization=$Organization
+        -Dsonar.sources=. 
+        -Dsonar.host.url=$HOST 
+        -Dsonar.login=$LOGIN 
 
 
   post_build:
