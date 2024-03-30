@@ -2,10 +2,10 @@ version: 0.2
 
 env:
   secrets-manager:
-    LOGIN: x23195983-Sonar:Sonartoken
-    HOST: x23195983-Sonar:HOST
-    Organization: x23195983-Sonar:Organization
-    Project: x23195983-Sonar:Project
+    LOGIN: x23195983-Sonartoken
+    HOST: htpps://sonarcloud.io
+    Organization: rohithkonanravi
+    Project: RohithKonanRavi_southern-Delicious
 phases:
   install:
     runtime-versions:
@@ -33,13 +33,7 @@ phases:
       - echo Running tests...
       - python manage.py test
       - echo Starting SonarQube analysis...
-      - |
-        sonar-scanner -X 
-        -Dsonar.projectKey=$project
-        -Dsonar.organization=$Organization
-        -Dsonar.sources=. 
-        -Dsonar.host.url=$HOST 
-        -Dsonar.login=$LOGIN 
+      - sonar-scanner -X -Dsonar.projectKey=$project -Dsonar.organization=$Organization -Dsonar.sources=. -Dsonar.host.url=$HOST -Dsonar.login=$LOGIN 
 
 
   post_build:
