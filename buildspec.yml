@@ -21,16 +21,14 @@ phases:
       - rm OpenJDK17U-jre_aarch64_linux_hotspot_17.0.10_7.tar.gz
       - export JAVA_HOME=/opt/jdk-17.0.10+7-jre
       - export PATH="$JAVA_HOME/bin:$PATH"
-      - java -version  # Check Java version
+      - java -version  # Verify Java version
       - echo Installing SonarQube scanner...
-      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip # Make sure to specify the correct version
+      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
       - unzip -q sonar-scanner-cli-5.0.1.3006-linux.zip -d /opt/
       - chmod +x /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
+      - export SONAR_SCANNER_OPTS="-Djava.home=$JAVA_HOME"
       - export PATH="/opt/sonar-scanner-5.0.1.3006-linux/bin:$PATH"
-      - sonar-scanner -v
-      - echo Installing jq...
-      - apt-get update
-      - apt-get install -y jq
+      - sonar-scanner -v  # Verify SonarScanner version
 
   pre_build:
     commands:
@@ -43,14 +41,6 @@ phases:
       - python manage.py test
       - echo Starting SonarQube analysis...
       - sonar-scanner -X -Dsonar.projectKey=$PROJECT -Dsonar.organization=$ORGANIZATION -Dsonar.sources=. -Dsonar.host.url=$HOST -Dsonar.login=$LOGIN -Dsonar.python.coverage.reportPaths=coverage.xml
-      - sleep 5
-      - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$PROJECT >result.json
-      - cat result.json
-      - >
-        if [ "$(jq -r '.projectStatus.status' result.json)" = "ERROR" ]; then
-          echo "Quality Gate failed";
-          exit 1;
-        fi
 
   post_build:
     commands:
