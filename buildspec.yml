@@ -12,8 +12,8 @@ phases:
       python: 3.11
       java: corretto17    
     commands:
-      - apt-get update
-      - apt-get install -y jq
+      - yum update -y
+      - yum install -y jq
       - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
       - export PATH=$JAVA_HOME/bin:$PATH
       - java -version 
