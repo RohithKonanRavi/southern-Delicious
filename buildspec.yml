@@ -21,12 +21,12 @@ phases:
       - echo Installing SonarQube scanner...
       - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.0.702-linux.zip
       - unzip sonar-scanner-cli-3.0.0.702-linux.zip -d sonar-scanner
-      - export PATH=$PATH:$(pwd)/sonar-scanner/sonar-scanner-cli-3.0.0.702-linux.zip/bin
+      - export PATH=$PATH:$(pwd)/sonar-scanner/sonar-scanner-cli-3.0.0.702-linux/bin
       - sonar-scanner -v
       - echo Installing jq...
       - apt-get update
       - apt-get install jq
-      
+
   pre_build:
     commands:
       - echo Running Pylint...
