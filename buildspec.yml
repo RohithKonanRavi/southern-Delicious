@@ -11,10 +11,10 @@ phases:
   install:
     runtime-versions:
       python: 3.11
-      java: corretto11
+      java: corretto21
     commands:
       - echo Setting JAVA_HOME...
-      - export JAVA_HOME=/usr/lib/jvm/java-11-amazon-corretto
+      - export JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto
       - export PATH=$JAVA_HOME/bin:$PATH
       - java -version
       - echo Installing requirements...
