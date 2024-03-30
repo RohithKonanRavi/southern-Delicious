@@ -17,10 +17,10 @@ phases:
       - pip install -r requirements.txt
       - pip install pylint
       - echo Downloading and installing Java for ARM...
-      - wget https://download.bell-sw.com/java/17.0.2+8/bellsoft-jdk17.0.2+8-linux-aarch64.tar.gz
-      - tar -xzvf bellsoft-jdk17.0.2+8-linux-aarch64.tar.gz -C /opt/
-      - rm bellsoft-jdk17.0.2+8-linux-aarch64.tar.gz
-      - export JAVA_HOME=/opt/jdk17.0.2+8
+      - wget https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.10%2B7/OpenJDK17U-jre_aarch64_linux_hotspot_17.0.10_7.tar.gz
+      - tar -xzvf OpenJDK17U-jre_aarch64_linux_hotspot_17.0.10_7.tar.gz -C /opt/
+      - rm OpenJDK17U-jre_aarch64_linux_hotspot_17.0.10_7.tar.gz
+      - export JAVA_HOME=/opt/jdk-17.0.10+7-jre/bin
       - export PATH="$JAVA_HOME/bin:$PATH"
       - java -version  # Check Java version
       - echo Installing SonarQube scanner...
