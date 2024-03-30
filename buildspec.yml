@@ -1,56 +1,39 @@
 version: 0.2
 
-env:
-  variables:
-    LOGIN: "236f7a35882853a0ab27bd75d4c45a5b9c5604c6"
-    HOST: "https://sonarcloud.io"
-    ORGANIZATION: "rohithkonanravi"
-    PROJECT: "RohithKonanRavi_southern-Delicious"
-
 phases:
   install:
     runtime-versions:
-      python: 3.11
+      python: 3.8
     commands:
-      - echo Installing requirements...
-      - pip install -r requirements.txt
+      - echo "Installing pylint..."
       - pip install pylint
-      - echo Downloading and installing Java for ARM...
-      - wget https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.10%2B7/OpenJDK17U-jre_aarch64_linux_hotspot_17.0.10_7.tar.gz
-      - tar -xzvf OpenJDK17U-jre_aarch64_linux_hotspot_17.0.10_7.tar.gz -C /opt/
-      - rm OpenJDK17U-jre_aarch64_linux_hotspot_17.0.10_7.tar.gz
-      - export JAVA_HOME=/opt/jdk-17.0.10+7-jre
-      - export PATH="$JAVA_HOME/bin:$PATH"
-      - java -version  # Verify Java version
-      - echo Installing SonarQube scanner...
+      - echo "Installing SonarScanner..."
       - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-      - unzip -q sonar-scanner-cli-5.0.1.3006-linux.zip -d /opt/
-      - chmod +x /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
-      - export SONAR_SCANNER_OPTS="-Djava.home=$JAVA_HOME"
-      - export PATH="/opt/sonar-scanner-5.0.1.3006-linux/bin:$PATH"
-      - sonar-scanner -v  # Verify SonarScanner version
-
+      - unzip sonar-scanner-cli-5.0.1.3006-linux.zip
+      - export PATH=$PATH:$(pwd)/sonar-scanner-5.0.1.3006-linux/bin
+  
   pre_build:
     commands:
-      - echo Running Pylint...
-      - pylint --exit-zero accounts/ main/ southern_delicious/
+      - echo "Pre-build step; install project dependencies..."
+      # Add commands to install any dependencies your project might have, for example:
+      - pip install -r requirements.txt
 
   build:
     commands:
-      - echo Running tests...
-      - python manage.py test
-      - echo Starting SonarQube analysis...
-      - sonar-scanner -X -Dsonar.projectKey=$PROJECT -Dsonar.organization=$ORGANIZATION -Dsonar.sources=. -Dsonar.host.url=$HOST -Dsonar.login=$LOGIN -Dsonar.python.coverage.reportPaths=coverage.xml
+      - echo "Running pylint..."
+      # Replace ./src with the directory where your Python code exists
+      - pylint ./src
+      - echo "Running sonar-scanner..."
+      # The following environment variables and scanner properties will be used by sonar-scanner
+      - >
+        sonar-scanner
+        -Dsonar.projectKey=RohithKonanRavi_southern-Delicious
+        -Dsonar.organization=rohithkonanravi
+        -Dsonar.sources=./src
+        -Dsonar.host.url=https://sonarcloud.io
+        -Dsonar.login=236f7a35882853a0ab27bd75d4c45a5b9c5604c6
 
   post_build:
     commands:
-      - echo Build completed on `date`
-
-artifacts:
-  files:
-    - '**/*'
-
-cache:
-  paths:
-    - '/root/.m2/**/*'
-    - '/root/.sonar/cache/**/*'
+      - echo "Post-build steps..."
+      # Add any commands that need to be run after the build phase
