@@ -16,14 +16,19 @@ phases:
       - echo Installing requirements...
       - pip install -r requirements.txt
       - pip install pylint
+      - echo Downloading and installing Java for ARM...
+      - wget https://download.bell-sw.com/java/17.0.2+8/bellsoft-jdk17.0.2+8-linux-aarch64.tar.gz
+      - tar -xzvf bellsoft-jdk17.0.2+8-linux-aarch64.tar.gz -C /opt/
+      - rm bellsoft-jdk17.0.2+8-linux-aarch64.tar.gz
+      - export JAVA_HOME=/opt/jdk17.0.2+8
+      - export PATH="$JAVA_HOME/bin:$PATH"
+      - java -version  # Check Java version
       - echo Installing SonarQube scanner...
       - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
       - unzip -q sonar-scanner-cli-5.0.1.3006-linux.zip -d /opt/
       - chmod +x /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
       - export PATH="/opt/sonar-scanner-5.0.1.3006-linux/bin:$PATH"
-      - export JAVA_HOME=/opt/sonar-scanner-5.0.1.3006-linux/jre
       - echo $PATH
-      - echo $JAVA_HOME
       - sonar-scanner -v
       - echo Installing jq...
       - apt-get update
@@ -33,6 +38,7 @@ phases:
     commands:
       - echo Running Pylint...
       - pylint --exit-zero accounts/ main/ southern_delicious/
+
   build:
     commands:
       - echo Running tests...
@@ -47,12 +53,15 @@ phases:
           echo "Quality Gate failed";
           exit 1;
         fi
+
   post_build:
     commands:
       - echo Build completed on `date`
+
 artifacts:
   files:
     - '**/*'
+
 cache:
   paths:
     - '/root/.m2/**/*'
