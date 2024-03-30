@@ -25,6 +25,7 @@ phases:
       - echo set path for sonar-scanner cli
       - export SONAR_SCANNER_HOME=/opt/sonar-scanner
       - export PATH=${SONAR_SCANNER_HOME}/bin:${PATH}
+      - chmod +x /opt/sonar-scanner/bin/sonar-scanner
       - sonar-scanner -v
 
       # - export PATH=$PATH:/sonar-scanner/sonar-scanner-cli-3.0.0.702-linux/bin
