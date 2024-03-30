@@ -10,29 +10,18 @@ env:
 phases:
   install:
     runtime-versions:
-      java: corretto17
       python: 3.11
 
     commands:
-      - java -version
       - echo Installing requirements...
       - pip install -r requirements.txt
       - pip install pylint
       - echo Installing SonarQube scanner...
       - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
       - unzip -q sonar-scanner-cli-5.0.1.3006-linux.zip -d /opt/
-      - ls -lrt /opt/
-      - chmod +x /opt/sonar-scanner-5.0.1.3006-linux/jre/bin/java
-      - ls -lrt /opt/sonar-scanner-5.0.1.3006-linux/jre/bin/java
       - chmod +x /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
-      - ls -lrt /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
-      - uname -m
-      - ls -lrt /opt/sonar-scanner-5.0.1.3006-linux//bin/
-      - ls -lrt /opt/sonar-scanner-5.0.1.3006-linux/jre/bin/java
       - export PATH="/opt/sonar-scanner-5.0.1.3006-linux/bin:$PATH"
       - echo $PATH
-      - java -version
-      - echo $JAVA_HOME
       - sonar-scanner -v
       - echo Installing jq...
       - apt-get update
@@ -47,7 +36,7 @@ phases:
       - echo Running tests...
       - python manage.py test
       - echo Starting SonarQube analysis...
-      - sonar-scanner -X -Dsonar.projectKey=$PROJECT -Dsonar.organization=$ORGANIZATION -Dsonar.sources=. -Dsonar.host.url=$HOST -Dsonar.login=$LOGIN -Dsonar.python.coverage.reportPaths=coverage.xml
+      - /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -X -Dsonar.projectKey=$PROJECT -Dsonar.organization=$ORGANIZATION -Dsonar.sources=. -Dsonar.host.url=$HOST -Dsonar.login=$LOGIN -Dsonar.python.coverage.reportPaths=coverage.xml
       - sleep 5
       - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$PROJECT >result.json
       - cat result.json
