@@ -19,9 +19,9 @@ phases:
       - pip install -r requirements.txt
       - pip install pylint
       - echo Installing SonarQube scanner...
-      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-      - unzip sonar-scanner-cli-5.0.1.3006-linux.zip -d sonar-scanner
-      - export PATH=$PATH:$(pwd)/sonar-scanner/sonar-scanner-cli-5.0.1.3006-linux.zip/bin
+      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.0.702-linux.zip
+      - unzip sonar-scanner-cli-3.0.0.702-linux.zip -d sonar-scanner
+      - export PATH=$PATH:$(pwd)/sonar-scanner/sonar-scanner-cli-3.0.0.702-linux.zip/bin
   pre_build:
     commands:
       - echo Running Pylint...
