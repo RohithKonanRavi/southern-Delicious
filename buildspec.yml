@@ -10,9 +10,9 @@ env:
 phases:
   install:
     commands:
-      - echo Installing and setting Java 17...
-      - sudo yum install -y java-17-amazon-corretto-headless # Install Java 11
-      - export JAVA_HOME=/usr/lib/jvm/java-17-amazon-corretto # Set Java 17 as JAVA_HOME
+      - echo Installing and setting Java 11...
+      - sudo yum install -y java-11-amazon-corretto-headless # Install Java 11
+      - export JAVA_HOME=/usr/lib/jvm/java-11-amazon-corretto # Set Java 17 as JAVA_HOME
       - export PATH=$JAVA_HOME/bin:$PATH
       - java -version
       - echo Installing requirements...
