@@ -11,29 +11,26 @@ phases:
       - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
       - unzip sonar-scanner-cli-5.0.1.3006-linux.zip
       - export PATH=$PATH:$(pwd)/sonar-scanner-5.0.1.3006-linux/bin
-  
+
   pre_build:
     commands:
       - echo "Pre-build step; install project dependencies..."
-      # Add commands to install any dependencies your project might have, for example:
       - pip install -r requirements.txt
 
   build:
     commands:
       - echo "Running pylint..."
-      # Replace ./src with the directory where your Python code exists
       - pylint --exit-zero accounts/ main/ southern_delicious/
       - echo "Running sonar-scanner..."
-      # The following environment variables and scanner properties will be used by sonar-scanner
       - >
         sonar-scanner
         -Dsonar.projectKey=RohithKonanRavi_southern-Delicious
         -Dsonar.organization=rohithkonanravi
-        -Dsonar.sources=./src
+        -Dsonar.sources=.
         -Dsonar.host.url=https://sonarcloud.io
         -Dsonar.login=4dc5c635c1bcb253d4855f421850974a2b00b91a
+        -Djava.home=$(pwd)/sonar-scanner-5.0.1.3006-linux/jre
 
   post_build:
     commands:
       - echo "Post-build steps..."
-      # Add any commands that need to be run after the build phase
