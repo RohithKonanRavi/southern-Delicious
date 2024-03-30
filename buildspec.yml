@@ -2,29 +2,32 @@ version: 0.2
 
 env:
   variables:
-    LOGIN: 236f7a35882853a0ab27bd75d4c45a5b9c5604c6
-    HOST: https://sonarcloud.io
-    ORGANIZATION: rohithkonanravi
-    PROJECT: RohithKonanRavi_southern-Delicious
+    LOGIN: "236f7a35882853a0ab27bd75d4c45a5b9c5604c6"
+    HOST: "https://sonarcloud.io"
+    ORGANIZATION: "rohithkonanravi"
+    PROJECT: "RohithKonanRavi_southern-Delicious"
+
 phases:
   install:
-    runtime-versions:
-      python: 3.11
-      java: corretto17
     commands:
-      - echo Setting JAVA_HOME...
-      - JAVA_HOME=$(alternatives --display java | grep 'family corretto-17' -A 1 | grep 'link currently points to' | sed 's/link currently points to //g' | sed 's|/bin/java||g')
-      - echo "JAVA_HOME set to $JAVA_HOME"
+      # Update the package repository
+      - yum update -y
+      # Install jq for JSON processing
+      - yum install -y jq
+      # Set Java 17 (Amazon Corretto 17) as the JAVA_HOME
+      - JAVA_HOME=/usr/lib/jvm/java-17-amazon-corretto.x86_64
       - export JAVA_HOME
       - export PATH=$JAVA_HOME/bin:$PATH
       - java -version
+      # Install requirements and pylint
       - echo Installing requirements...
       - pip install -r requirements.txt
       - pip install pylint
+      # Download and setup SonarScanner
       - echo Installing SonarQube scanner...
       - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
-      - unzip sonar-scanner-cli-4.6.2.2472-linux.zip -d sonar-scanner
-      - export PATH=$PATH:$(pwd)/sonar-scanner/sonar-scanner-4.6.2.2472-linux/bin
+      - unzip sonar-scanner-cli-4.6.2.2472-linux.zip
+      - export PATH=$PATH:$(pwd)/sonar-scanner-4.6.2.2472-linux/bin
 
   pre_build:
     commands:
@@ -36,7 +39,7 @@ phases:
       - echo Running tests...
       - python manage.py test
       - echo Starting SonarQube analysis...
-      - sonar-scanner -Dsonar.projectKey=$PROJECT -Dsonar.organization=$ORGANIZATION -Dsonar.sources=. -Dsonar.host.url=$HOST -Dsonar.login=$LOGIN -Dsonar.python.coverage.reportPaths=coverage.xml
+      - sonar-scanner -X -Dsonar.projectKey=$PROJECT -Dsonar.organization=$ORGANIZATION -Dsonar.sources=. -Dsonar.host.url=$HOST -Dsonar.login=$LOGIN -Dsonar.python.coverage.reportPaths=coverage.xml
       - sleep 5
       - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$PROJECT >result.json
       - cat result.json
