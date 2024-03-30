@@ -4,14 +4,12 @@ phases:
   install:
     commands:
       - uname -m
-      # Update system
-      - sudo dnf update -y
-      # Install OpenJDK 17
-      - sudo dnf install -y java-17-openjdk
+      # Install Corretto 17
+      - sudo rpm --import https://yum.corretto.aws/corretto.key
+      - sudo curl -L -o /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.repo
+      - sudo dnf install -y java-17-amazon-corretto-devel
       # Verify Java installation
       - java -version
-      # Set JAVA_HOME. This path might need adjustment based on the actual installation directory of OpenJDK 17
-      - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
       - echo "JAVA_HOME is set to $JAVA_HOME"
       - echo "Installing pylint..."
       - pip install pylint
@@ -37,7 +35,6 @@ phases:
         -Dsonar.sources=.
         -Dsonar.host.url=https://sonarcloud.io
         -Dsonar.login=4dc5c635c1bcb253d4855f421850974a2b00b91a
-        -Djava.home=$JAVA_HOME
 
   post_build:
     commands:
