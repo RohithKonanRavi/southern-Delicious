@@ -11,7 +11,6 @@ phases:
   install:
     runtime-versions:
       python: 3.11
-
     commands:
       - echo Installing requirements...
       - pip install -r requirements.txt
@@ -20,15 +19,15 @@ phases:
       - wget https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.10%2B7/OpenJDK17U-jre_aarch64_linux_hotspot_17.0.10_7.tar.gz
       - tar -xzvf OpenJDK17U-jre_aarch64_linux_hotspot_17.0.10_7.tar.gz -C /opt/
       - rm OpenJDK17U-jre_aarch64_linux_hotspot_17.0.10_7.tar.gz
-      - export JAVA_HOME=/opt/jdk-17.0.10+7-jre/bin
-      - export PATH="$JAVA_HOME:$PATH"
+      - export JAVA_HOME=/opt/jdk-17.0.10+7-jre
+      - export PATH="$JAVA_HOME/bin:$PATH"
       - java -version  # Check Java version
       - echo Installing SonarQube scanner...
       - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
       - unzip -q sonar-scanner-cli-5.0.1.3006-linux.zip -d /opt/
       - chmod +x /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
       - export PATH="/opt/sonar-scanner-5.0.1.3006-linux/bin:$PATH"
-      - echo $PATH
+      - export SONAR_SCANNER_OPTS="-Djava.home=$JAVA_HOME"
       - sonar-scanner -v
       - echo Installing jq...
       - apt-get update
