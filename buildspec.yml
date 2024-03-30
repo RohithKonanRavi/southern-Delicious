@@ -3,7 +3,7 @@ version: 0.2
 env:
   variables:
     LOGIN: sqp_acec9008a9b750739c1b2094c3e8f23fb3733a40
-    HOST: htpps://sonarcloud.io
+    HOST: https://sonarcloud.io
     Organization: rohithkonanravi
     Project: RohithKonanRavi_southern-Delicious
 phases:
