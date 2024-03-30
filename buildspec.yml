@@ -23,7 +23,9 @@ phases:
       - unzip -q sonar-scanner-cli-5.0.1.3006-linux.zip -d /opt/
       - ls -lrt /opt/
       - chmod +x /opt/sonar-scanner-5.0.1.3006-linux/jre/bin/java
+      - ls -lrt /opt/sonar-scanner-5.0.1.3006-linux/jre/bin/java
       - chmod +x /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
+      - ls -lrt /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
 
       - ls -lrt /opt/sonar-scanner-5.0.1.3006-linux//bin/
       - export PATH="/opt/sonar-scanner-5.0.1.3006-linux/bin:$PATH"
