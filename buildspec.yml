@@ -10,7 +10,7 @@ phases:
   install:
     commands:
     - dnf update -y
-    - dnf install -y python3-pip python3-dev build-essential
+    - dnf install -y python3-pip
     # Install virtualenv to isolate the build environment
     - pip3 install virtualenv
     - virtualenv venv
