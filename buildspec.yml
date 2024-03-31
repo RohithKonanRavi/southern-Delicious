@@ -23,7 +23,7 @@ phases:
     - unset JAVA_HOME
     - java -version
     - echo " find the java path"
-    - find  java -name "java"
+    - which java
 
   pre_build:
     commands:
