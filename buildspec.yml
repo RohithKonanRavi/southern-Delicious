@@ -20,11 +20,15 @@ phases:
     - useradd -r -s /bin/false -g sonar sonar || true
     - chown -R sonar:sonar /opt/sonar-scanner-5.0.1.3006-linux
     - chmod -R 755 /opt/sonar-scanner-5.0.1.3006-linux
-    # Unset JAVA_HOME to avoid using bundled Java
+    # Unset JAVA_HOME to ensure we are not using the bundled Java
     - unset JAVA_HOME
     # Set JAVA_HOME to the system's Java installation
     - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
     - echo "JAVA_HOME is set to $JAVA_HOME"
+    - echo "Checking Java version and file"
+    - java -version
+    - which java
+    - ls -l $(which java)
 
   pre_build:
     commands:
@@ -36,9 +40,12 @@ phases:
     - echo "Running pylint..."
     - pylint --exit-zero accounts/ main/ southern_delicious/
     - echo "Switching to sonar user and running sonar-scanner..."
+    # Use the system's Java for SonarScanner
     - sudo -E -u sonar /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -v
     - sudo -E -u sonar /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -X
 
   post_build:
     commands:
     - echo "Post-build steps..."
+
+# Add any additional configurations or phases below as necessary.
