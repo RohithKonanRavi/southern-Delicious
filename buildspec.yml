@@ -15,15 +15,11 @@ phases:
     - rm sonar-scanner-cli-5.0.1.3006-linux.zip
     - export PATH=$PATH:/opt/sonar-scanner-5.0.1.3006-linux/bin
     - export SONAR_SCANNER_HOME=/opt/sonar-scanner-5.0.1.3006-linux
-    # Ensure JAVA_HOME is set to use the system's java, not the bundled one which caused problems
-    - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
     - echo "Creating sonar user and group..."
-    - groupadd sonar || true # If group already exists, don't fail
-    - useradd -r -s /bin/false -g sonar sonar || true # If user already exists, don't fail
+    - groupadd sonar || true
+    - useradd -r -s /bin/false -g sonar sonar || true
     - chown -R sonar:sonar /opt/sonar-scanner-5.0.1.3006-linux
     - chmod -R 755 /opt/sonar-scanner-5.0.1.3006-linux
-    - echo "Verifying SonarScanner version..."
-    - /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -v
 
   pre_build:
     commands:
@@ -34,9 +30,13 @@ phases:
     commands:
     - echo "Running pylint..."
     - pylint --exit-zero accounts/ main/ southern_delicious/
-    - echo "Running sonar-scanner as sonar user..."
-    - sudo -u sonar /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -X
+    - echo "Switching to sonar user and running sonar-scanner..."
+    - sudo su sonar -c '/opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -X'
+    - echo "Checking SonarScanner version as sonar user..."
+    - sudo su sonar -c '/opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -v'
 
   post_build:
     commands:
     - echo "Post-build steps..."
+
+# Add additional configurations here as necessary
