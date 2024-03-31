@@ -31,9 +31,10 @@ phases:
     - echo "Running pylint..."
     - pylint --exit-zero accounts/ main/ southern_delicious/
     - echo "Switching to sonar user and running sonar-scanner..."
+    - sudo su sonar -c '/opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -v'
     - sudo su sonar -c '/opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -X'
     - echo "Checking SonarScanner version as sonar user..."
-    - sudo su sonar -c '/opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -v'
+
 
   post_build:
     commands:
