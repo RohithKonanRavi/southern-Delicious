@@ -5,8 +5,8 @@ phases:
     commands:
     # Install python and pip
     - echo Installing Python 3...
-    - apt-get update
-    - apt-get install -y python3-pip python3-venv
+    - dnf update
+    - dnf install -y python3-pip python3-venv
     # Setup virtual environment
     - echo Setting up virtual environment...
     - python3 -m venv venv
