@@ -12,9 +12,9 @@ phases:
     - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
     - unzip sonar-scanner-cli-5.0.1.3006-linux.zip
     - mv sonar-scanner-5.0.1.3006-linux /opt/
-    - export PATH=$PATH:/opt/sonar-scanner-5.0.1.3006-linux/bin
+    - export JAVA_HOME=/opt/sonar-scanner-5.0.1.3006-linux/jre
     - export SONAR_SCANNER_HOME=/opt/sonar-scanner-5.0.1.3006-linux
-    - export JAVA_HOME=$SONAR_SCANNER_HOME/jre
+    - export PATH=$PATH:/opt/sonar-scanner-5.0.1.3006-linux/bin
     - echo "Configuring SonarScanner CLI environment variables..."
     - echo "path"
     - echo "$PATH"
@@ -37,7 +37,7 @@ phases:
     - echo "Running pylint..."
     - pylint --exit-zero accounts/ main/ southern_delicious/
     - echo "Running sonar-scanner in debug mode for detailed logs..."
-    - sonar-scanner -X -Dsonar.projectKey=RohithKonanRavi_southern-Delicious -Dsonar.organization=rohithkonanravi -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=4dc5c635c1bcb253d4855f421850974a2b00b91a #magic___^_^___line
+    - sonar-scanner -X -Dsonar.projectKey=RohithKonanRavi_southern-Delicious -Dsonar.organization=rohithkonanravi -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=4dc5c635c1bcb253d4855f421850974a2b00b91a
   post_build:
     commands:
     - echo "Post-build steps..."
