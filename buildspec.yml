@@ -30,7 +30,7 @@ phases:
     commands:
     # Run Pylint
     - echo "Running Pylint..."
-    - pylint --output-format=text your_project_directory/
+    - pylint --output-format=text accounts/ main/ southern_delicious/
     # Here you can add other build commands for your Django project
 
   post_build:
