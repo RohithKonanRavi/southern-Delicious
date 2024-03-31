@@ -29,9 +29,9 @@ phases:
     - python manage.py test
     - pylint --exit-zero --output-format=text your_project_directory/ > pylint_report.txt
     # Use Docker to run SonarScanner
-    - >
-      docker run  --rm  -e SONAR_HOST_URL="$HOST"  -e SONAR_LOGIN="$LOGIN"  -v $(pwd):/usr/src  sonarsource/sonar-scanner-cli  -Dsonar.projectKey=$Project  -Dsonar.organization=$Organization  -Dsonar.sources=.  -Dsonar.python.pylint.reportPaths=pylint_report.txt #magic___^_^___line
-# You may define artifacts as needed
+    - ""
+#       docker run  --rm  -e SONAR_HOST_URL="$HOST"  -e SONAR_LOGIN="$LOGIN"  -v $(pwd):/usr/src  sonarsource/sonar-scanner-cli  -Dsonar.projectKey=$Project  -Dsonar.organization=$Organization  -Dsonar.sources=.  -Dsonar.python.pylint.reportPaths=pylint_report.txt #magic___^_^___line
+# # You may define artifacts as needed
 artifacts:
   files:
   - '**/*'
