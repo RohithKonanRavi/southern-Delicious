@@ -12,12 +12,15 @@ phases:
     - echo "Downloading and setting up SonarScanner CLI..."
     - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
     - unzip sonar-scanner-cli-5.0.1.3006-linux.zip -d /opt
+    - rm sonar-scanner-cli-5.0.1.3006-linux.zip
     - export PATH=$PATH:/opt/sonar-scanner-5.0.1.3006-linux/bin
     - export SONAR_SCANNER_HOME=/opt/sonar-scanner-5.0.1.3006-linux
     # Set JAVA_HOME to the bundled JRE within the SonarScanner package
     - export JAVA_HOME=$SONAR_SCANNER_HOME/jre
+    - echo $JAVA_HOME/
     - pwd && ls -al
-    - ~/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -v
+    - ls -al /opt/sonar-scanner-5.0.1.3006-linux/bin
+    - ./opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -v
     # - echo "Using bundled JRE for SonarScanner..."
     # - $JAVA_HOME/bin/java -version
     - java -version
