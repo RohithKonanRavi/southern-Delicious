@@ -10,22 +10,14 @@ phases:
     - pip install pylint
     - echo "Downloading and setting up SonarScanner CLI..."
     - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-    - unzip sonar-scanner-cli-5.0.1.3006-linux.zip
-    - mv sonar-scanner-5.0.1.3006-linux /opt/
-    - export JAVA_HOME=/opt/sonar-scanner-5.0.1.3006-linux/jre
-    - export SONAR_SCANNER_HOME=/opt/sonar-scanner-5.0.1.3006-linux
-    - export PATH=$PATH:/opt/sonar-scanner-5.0.1.3006-linux/bin
+    - unzip sonar-scanner-cli-5.0.1.3006-linux.zip -d /opt
     - echo "Configuring SonarScanner CLI environment variables..."
-    - echo "path"
-    - echo "$PATH"
-    - echo "SONAR_SCANNER_HOME"
-    - echo "$SONAR_SCANNER_HOME"
-    - echo "JAVA_HOME"
-    - echo "$JAVA_HOME"
+    - export PATH=$PATH:/opt/sonar-scanner-5.0.1.3006-linux/bin
+    - export SONAR_SCANNER_HOME=/opt/sonar-scanner-5.0.1.3006-linux
+    - export JAVA_HOME=$SONAR_SCANNER_HOME/jre
     - echo "Verifying SonarScanner and Java setup..."
-    - sonar-scanner -v
-    - java -version
-    - ls -lrt /opt/sonar-scanner-5.0.1.3006-linux/bin
+    - /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -v
+    - $SONAR_SCANNER_HOME/jre/bin/java -version
 
   pre_build:
     commands:
@@ -37,7 +29,8 @@ phases:
     - echo "Running pylint..."
     - pylint --exit-zero accounts/ main/ southern_delicious/
     - echo "Running sonar-scanner in debug mode for detailed logs..."
-    - sonar-scanner -X -Dsonar.projectKey=RohithKonanRavi_southern-Delicious -Dsonar.organization=rohithkonanravi -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=4dc5c635c1bcb253d4855f421850974a2b00b91a
+    - /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -X -Dsonar.projectKey=RohithKonanRavi_southern-Delicious -Dsonar.organization=rohithkonanravi -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=4dc5c635c1bcb253d4855f421850974a2b00b91a
+
   post_build:
     commands:
     - echo "Post-build steps..."
