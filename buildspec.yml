@@ -28,12 +28,9 @@ phases:
     commands:
     - python manage.py test
     - pylint --exit-zero --output-format=text your_project_directory/ > pylint_report.txt
-    - sonar-scanner \ -Dsonar.projectKey=$Project \ -Dsonar.organization=$Organization \ -Dsonar.sources=. \ -Dsonar.host.url=$HOST \ -Dsonar.login=$LOGIN \ -Dsonar.python.pylint.reportPaths=pylint_report.txt
-    - sleep 5
-    - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$Project >result.json
-    - cat result.json
-    - if [ $(jq -r '.projectStatus.status' result.json) = "ERROR" ] ; then exit 1 ;fi
-
+    # Use Docker to run SonarScanner
+    - >
+      docker run  --rm  -e SONAR_HOST_URL="$HOST"  -e SONAR_LOGIN="$LOGIN"  -v $(pwd):/usr/src  sonarsource/sonar-scanner-cli  -Dsonar.projectKey=$Project  -Dsonar.organization=$Organization  -Dsonar.sources=.  -Dsonar.python.pylint.reportPaths=pylint_report.txt #magic___^_^___line
 # You may define artifacts as needed
 artifacts:
   files:
