@@ -16,6 +16,9 @@ phases:
     - export SONAR_SCANNER_HOME=/opt/sonar-scanner-5.0.1.3006-linux
     - export JAVA_HOME=$SONAR_SCANNER_HOME/jre
     - echo "Verifying SonarScanner and Java setup..."
+    - ls -l /opt/
+    - ls -l /opt/sonar-scanner-5.0.1.3006-linux/bin/
+    - ls -l /opt/sonar-scanner-5.0.1.3006-linux/jre/bin/java
     - /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -v
     - $SONAR_SCANNER_HOME/jre/bin/java -version
 
