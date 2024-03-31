@@ -5,6 +5,8 @@ phases:
     runtime-versions:
       python: 3.11
     commands:
+    - echo "Checking default Java version..."
+    - java -version
     - echo "Installing dependencies..."
     - pip install pylint
     - echo "Downloading and setting up SonarScanner CLI..."
@@ -12,6 +14,11 @@ phases:
     - unzip sonar-scanner-cli-5.0.1.3006-linux.zip -d /opt
     - export PATH=$PATH:/opt/sonar-scanner-5.0.1.3006-linux/bin
     - export SONAR_SCANNER_HOME=/opt/sonar-scanner-5.0.1.3006-linux
+    # Set JAVA_HOME to the bundled JRE within the SonarScanner package
+    - export JAVA_HOME=$SONAR_SCANNER_HOME/jre
+    - echo "Using bundled JRE for SonarScanner..."
+    - $JAVA_HOME/bin/java -version
+    - java -version
 
   pre_build:
     commands:
@@ -23,7 +30,6 @@ phases:
     - echo "Running pylint..."
     - pylint --exit-zero accounts/ main/ southern_delicious/
     - echo "Running sonar-scanner..."
-    # Make sure the sonar-scanner.properties file is at the root of your source code
     - sonar-scanner -X
 
   post_build:
