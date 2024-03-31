@@ -2,6 +2,9 @@ version: 0.2
 
 phases:
   install:
+    runtime-versions:
+      python: 3.11
+      java: corretto17
     commands:
       - uname -m
       # Install Corretto 17
@@ -16,7 +19,11 @@ phases:
       - echo "Installing SonarScanner..."
       - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
       - unzip sonar-scanner-cli-5.0.1.3006-linux.zip
-      - export PATH=$PATH:$(pwd)/sonar-scanner-5.0.1.3006-linux/bin
+      - mv sonar-scanner-5.0.1.3006-linux /opt/
+      - export PATH=$PATH:/opt/sonar-scanner-5.0.1.3006-linux/bin
+      - sonar-scanner -v
+      - ls -lrt /opt/sonar-scanner-5.0.1.3006-linux/bin
+      # - export PATH=$PATH:$(pwd)/sonar-scanner-5.0.1.3006-linux/bin
 
   pre_build:
     commands:
@@ -29,7 +36,7 @@ phases:
       - pylint --exit-zero accounts/ main/ southern_delicious/
       - echo "Running sonar-scanner..."
       - >
-        sonar-scanner
+        sonar-scanner -X
         -Dsonar.projectKey=RohithKonanRavi_southern-Delicious
         -Dsonar.organization=rohithkonanravi
         -Dsonar.sources=.
