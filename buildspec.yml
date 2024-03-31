@@ -3,16 +3,18 @@ version: 0.2
 phases:
   install:
     commands:
-    # Install python and pip
-    - echo Installing Python 3...
+    # Update the system and install Python and pip
+    - echo "Updating system and installing Python 3 and pip..."
     - dnf update -y
-    - dnf install -y python3-pip python3-venv
-    # Setup virtual environment
-    - echo Setting up virtual environment...
-    - python3 -m venv venv
-    - . venv/bin/activate
+    - dnf install -y python3-pip
+    # If python3-venv is not available, use virtualenv as an alternative
+    - pip3 install virtualenv
+    # Setup virtual environment using virtualenv
+    - echo "Setting up virtual environment..."
+    - virtualenv venv
+    - source venv/bin/activate
     # Install SonarScanner and Pylint
-    - echo Installing SonarScanner and Pylint...
+    - echo "Installing SonarScanner and Pylint..."
     - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
     - unzip sonar-scanner-cli-5.0.1.3006-linux.zip
     - export PATH=$PATH:$(pwd)/sonar-scanner-5.0.1.3006-linux/bin
@@ -21,20 +23,20 @@ phases:
   pre_build:
     commands:
     # Install project dependencies
-    - echo Installing project dependencies...
+    - echo "Installing project dependencies..."
     - pip install -r requirements.txt
 
   build:
     commands:
     # Run Pylint
-    - echo Running Pylint...
+    - echo "Running Pylint..."
     - pylint --output-format=text your_project_directory/
-    # Run tests here or any other build commands for Django
+    # Here you can add other build commands for your Django project
 
   post_build:
     commands:
     # SonarQube analysis
-    - echo Running SonarScanner...
+    - echo "Running SonarScanner..."
     - sonar-scanner \ -Dsonar.projectKey=RohithKonanRavi_southern-Delicious \ -Dsonar.organization=rohithkonanravi \ -Dsonar.sources=. \ -Dsonar.host.url=https://sonarcloud.io \ -Dsonar.login=4dc5c635c1bcb253d4855f421850974a2b00b91a
 
 artifacts:
