@@ -1,0 +1,46 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.11
+    commands:
+    - echo "Checking default Java version..."
+    - java -version
+    - echo "Installing dependencies..."
+    - pip install pylint
+    - echo "Downloading and setting up SonarScanner CLI..."
+    - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+    - unzip sonar-scanner-cli-5.0.1.3006-linux.zip -d /opt
+    - rm sonar-scanner-cli-5.0.1.3006-linux.zip
+    - export PATH=$PATH:/opt/sonar-scanner-5.0.1.3006-linux/bin
+    - export SONAR_SCANNER_HOME=/opt/sonar-scanner-5.0.1.3006-linux
+    - echo "Creating sonar user and group..."
+    - groupadd sonar || true
+    - useradd -r -s /bin/false -g sonar sonar || true
+    - chown -R sonar:sonar /opt/sonar-scanner-5.0.1.3006-linux
+    - chmod -R 755 /opt/sonar-scanner-5.0.1.3006-linux
+    - unset JAVA_HOME
+    - export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
+    - echo "JAVA_HOME is set to $JAVA_HOME"
+    - echo "Checking Java version and verifying file path..."
+    - java -version
+    - which java
+    - ls -l $(which java)
+
+  pre_build:
+    commands:
+    - echo "Pre-build step; install project dependencies..."
+    - pip install -r requirements.txt
+
+  build:
+    commands:
+    - echo "Running pylint..."
+    - pylint --exit-zero accounts/ main/ southern_delicious/
+    - echo "Switching to sonar user and running sonar-scanner..."
+    - sudo -E -u sonar /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -v
+    - sudo -E -u sonar /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -X
+
+  post_build:
+    commands:
+    - echo "Post-build steps..."

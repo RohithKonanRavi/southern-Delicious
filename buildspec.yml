@@ -2,36 +2,46 @@ version: 0.2
 
 env:
   variables:
-    Project: "RohithKonanRavi_southern-Delicious"
-    Organization: "rohithkonanravi"
-    HOST: "https://sonarcloud.io"
-    LOGIN: "4dc5c635c1bcb253d4855f421850974a2b00b91a"
+    PYLINT_THRESHOLD: "2.0"
+
 phases:
   install:
     commands:
-    - dnf update -y
-    - dnf install -y python3-pip
-    # Install virtualenv to isolate the build environment
+    - yum update -y
+    - yum install -y python3-pip
     - pip3 install virtualenv
     - virtualenv venv
     - source venv/bin/activate
     - pip install django djangorestframework pylint
-    - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
-    - unzip sonar-scanner-cli-4.6.2.2472-linux.zip
-    - export PATH=$PATH:$(pwd)/sonar-scanner-4.6.2.2472-linux/bin
+    - wget -q https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+    - unzip -q sonar-scanner-cli-5.0.1.3006-linux.zip
+    - java -version
+    - export JAVA_HOME=$(pwd)/sonar-scanner-5.0.1.3006-linux/jre
+    - java -version
+    - export PATH=$PATH:$(pwd)/sonar-scanner-5.0.1.3006-linux/bin
+    - sonar-scanner --version
 
   pre_build:
     commands:
     - pip install -r requirements.txt
+    # Runnig pylint to check errors in the code
+    - pylint --exit-zero --output-format=text accounts/ main/ southern_delicious/  | tee pylint_report.txt
+    - PYLINT_SCORE=$(awk '/Your code has been rated at/{print $}' pylint_report.txt | cut -d'/' -f1)
+    - echo "Score of pylint is:" " ${PYLINT_SCORE}"
+    - |
+      if (( $(echo "$PYLINT_SCORE < $PYLINT_THRESHOLD" | bc -l) )); then
+        echo "Pylint score is below the threshold of $PYLINT_THRESHOLD"
+        exit 1
+      fi
 
+
+
+    # Fail the build if PYLINT_SCORE is below the threshold
   build:
     commands:
-    - python manage.py test
-    - pylint --exit-zero --output-format=text your_project_directory/ > pylint_report.txt
-    # Use Docker to run SonarScanner
-    - ""
-#       docker run  --rm  -e SONAR_HOST_URL="$HOST"  -e SONAR_LOGIN="$LOGIN"  -v $(pwd):/usr/src  sonarsource/sonar-scanner-cli  -Dsonar.projectKey=$Project  -Dsonar.organization=$Organization  -Dsonar.sources=.  -Dsonar.python.pylint.reportPaths=pylint_report.txt #magic___^_^___line
-# # You may define artifacts as needed
+    #sonar analyiss this report will be send to the sonarcloud
+    - sonar-scanner -Dsonar.organization=rohithkonanravi  -Dsonar.projectKey=RohithKonanRavi_southern-Deliciousg  -Dsonar.sources=.   -Dsonar.host.url=https://sonarcloud.io -Dsonar.python.pylint.reportPaths=pylint_report.txt
+
 artifacts:
   files:
   - '**/*'

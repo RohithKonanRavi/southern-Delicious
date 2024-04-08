@@ -1,0 +1,88 @@
+Folder PATH listing for volume New Volume
+Volume serial number is 1CB3-F6D4
+D:.
+|   .gitignore
+|   buildspec.yml
+|   manage.py
+|   README.md
+|   requirements.txt
+|   tree.txt
+|   _requirements.txt
+|   
++---.ebextensions
+|       django.config
+|       
++---accounts
+|   |   admin.py
+|   |   apps.py
+|   |   forms.py
+|   |   models.py
+|   |   tests.py
+|   |   urls.py
+|   |   views.py
+|   |   __init__.py
+|   |   
+|   \---templates
+|       \---accounts
+|               login.html
+|               signup.html
+|               
++---main
+|   |   admin.py
+|   |   apps.py
+|   |   decorators.py
+|   |   forms.py
+|   |   models.py
+|   |   tests.py
+|   |   urls.py
+|   |   views.py
+|   |   __init__.py
+|   |   
+|   +---static
+|   |   \---main
+|   |           sb-admin-2.min.css
+|   |           styles.css
+|   |           
+|   +---templates
+|   |   \---main
+|   |           admin_dashboard.html
+|   |           admin_view.html
+|   |           cart.html
+|   |           cartitems_confirm_delete.html
+|   |           dishes.html
+|   |           home.html
+|   |           item_confirm_delete.html
+|   |           item_form.html
+|   |           item_list.html
+|   |           layout.html
+|   |           layout2.html
+|   |           order_details.html
+|   |           pending_orders.html
+|   |           
+|   \---templatetags
+|           get_group.py
+|           __init__.py
+|           
++---media
+|   |   Southern_Delicious_restuarent.png
+|   |   
+|   \---images
+|           coffee.png
+|           coffee_lPMRNhy.png
+|           default.png
+|           order1.png
+|           order1_JhnxPMk.png
+|           order1_z4KKyWo.png
+|           order1_Z8Z0LJU.png
+|           order2.png
+|           order2_QX6NKFf.png
+|           pulav.png
+|           pulav_fOvzyvj.png
+|           
+\---southern_delicious
+        asgi.py
+        settings.py
+        urls.py
+        wsgi.py
+        __init__.py
+        
