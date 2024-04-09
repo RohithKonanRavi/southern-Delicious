@@ -7,8 +7,9 @@ env:
 phases:
   install:
     commands:
-    - yum update -y bc
-    - yum install -y python3-pip bc
+    - yum install -y bc
+    - yum update -y
+    - yum install -y python3-pip
     - pip3 install virtualenv
     - virtualenv venv
     - source venv/bin/activate
