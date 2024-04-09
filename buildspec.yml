@@ -7,7 +7,7 @@ env:
 phases:
   install:
     commands:
-    - yum update -y
+    - yum update -y bc
     - yum install -y python3-pip
     - pip3 install virtualenv
     - virtualenv venv
@@ -44,7 +44,7 @@ phases:
     #sonar analyiss this report will be send to the sonarcloud
 
     - echo "successfull"
-    # - sonar-scanner -Dsonar.organization=rohithkonanravi -Dsonar.projectKey=RohithKonanRavi_southern-Delicious -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.python.pylint.reportPaths=pylint_report.txt
+    - sonar-scanner -Dsonar.organization=rohithkonanravi -Dsonar.projectKey=RohithKonanRavi_southern-Delicious -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.python.pylint.reportPaths=pylint_report.txt
 
 
 artifacts:
